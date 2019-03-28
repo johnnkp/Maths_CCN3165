@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 } while (firstNumber % secondNumber != 0);
                 break;
         }
-        mQuestion = mQuestion + firstNumber + mOperator + secondNumber;
+        mQuestion = mQuestion + firstNumber + mOperator + secondNumber + " = ?";
         return mQuestion;
     }
 }
