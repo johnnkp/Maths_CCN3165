@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
             case "÷":
                 firstNumber = 1 + myRandom.nextInt(99);
+                do {
+                    secondNumber = myRandom.nextInt(100);
+                } while (firstNumber % secondNumber != 0);
+                break;
         }
         mQuestion = mQuestion + firstNumber + mOperator + secondNumber;
         return mQuestion;
