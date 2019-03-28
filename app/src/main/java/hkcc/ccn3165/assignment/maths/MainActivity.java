@@ -2,6 +2,8 @@ package hkcc.ccn3165.assignment.maths;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -9,6 +11,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
+    static TextView answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
 
         TextView question = findViewById(R.id.question);
         question.setText(question());
+
+        Button submit = findViewById(R.id.submit);
+        answer = findViewById(R.id.answer);
+        
+        submit.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                answer.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+        });
     }
 
     private String question() {
