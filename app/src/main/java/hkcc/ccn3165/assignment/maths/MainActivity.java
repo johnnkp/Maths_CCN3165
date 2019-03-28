@@ -37,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case "×":
+                firstNumber = 1 + myRandom.nextInt(20);
+                secondNumber = 1 + myRandom.nextInt(20);
+                break;
 
+            case "÷":
+                firstNumber = 1 + myRandom.nextInt(99);
         }
         mQuestion = mQuestion + firstNumber + mOperator + secondNumber;
         return mQuestion;
