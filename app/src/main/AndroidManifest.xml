@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="hkcc.ccn3165.assignment.maths">
+
+    <!-- https://github.com/ResurrectionRemix/android_packages_apps_ExactCalculator_Pie/blob/pie/res/mipmap-xxxhdpi/ic_launcher_calculator.png -->
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/resurrection_remix_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
