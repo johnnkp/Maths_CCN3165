@@ -27,9 +27,17 @@ public class MainActivity extends AppCompatActivity {
             case "+":
                 firstNumber = 1 + myRandom.nextInt(99);
                 secondNumber = 1 + myRandom.nextInt(99);
+                break;
 
             case "-":
                 firstNumber = 1 + myRandom.nextInt(99);
+                do {
+                    secondNumber = myRandom.nextInt(100);
+                } while (firstNumber < secondNumber);
+                break;
+
+            case "×":
+
         }
         mQuestion = mQuestion + firstNumber + mOperator + secondNumber;
         return mQuestion;
