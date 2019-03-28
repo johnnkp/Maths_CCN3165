@@ -20,9 +20,18 @@ public class MainActivity extends AppCompatActivity {
     private String question() {
         Random myRandom = new Random();
         String mQuestion = "Question: ", mOperator, operator[] = {"+", "-", "×", "÷"};
+        int firstNumber = 0, secondNumber = 0;
 
         mOperator = operator[myRandom.nextInt(4)];
-        mQuestion = mQuestion + mOperator;
+        switch (mOperator) {
+            case "+":
+                firstNumber = 1 + myRandom.nextInt(99);
+                secondNumber = 1 + myRandom.nextInt(99);
+
+            case "-":
+                firstNumber = 1 + myRandom.nextInt(99);
+        }
+        mQuestion = mQuestion + firstNumber + mOperator + secondNumber;
         return mQuestion;
     }
 }
