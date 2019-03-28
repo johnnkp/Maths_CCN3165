@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -23,10 +24,33 @@ public class MainActivity extends AppCompatActivity {
 
         Button submit = findViewById(R.id.submit);
         answer = findViewById(R.id.answer);
-        
+
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                answer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                EditText input = findViewById(R.id.input);
+                int userAnswer = Integer.parseInt(input.getText().toString()), correctAnswer = 0;
+                switch (mOperator) {
+                    case "+":
+                        correctAnswer = firstNumber + secondNumber;
+                        break;
+
+                    case "-":
+                        correctAnswer = firstNumber - secondNumber;
+                        break;
+
+                    case "×":
+                        correctAnswer = firstNumber * secondNumber;
+                        break;
+
+                    case "÷":
+                        correctAnswer = firstNumber / secondNumber;
+                        break;
+                }
+
+                if (userAnswer == correctAnswer) {
+                    answer.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                }
             }
         });
     }
