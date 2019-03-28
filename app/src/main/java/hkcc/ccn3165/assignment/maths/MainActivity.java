@@ -7,6 +7,8 @@ import android.widget.TextView;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    int firstNumber = 0, secondNumber = 0;
+    String mOperator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String question() {
         Random myRandom = new Random();
-        String mQuestion = "Question: ", mOperator, operator[] = {"+", "-", "×", "÷"};
-        int firstNumber = 0, secondNumber = 0;
+        String mQuestion = "Question: ", operator[] = {"+", "-", "×", "÷"};
 
         mOperator = operator[myRandom.nextInt(4)];
         switch (mOperator) {
