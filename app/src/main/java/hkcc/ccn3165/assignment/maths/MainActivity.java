@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isAnswered = false;
     public static AlertDialog skip;
     TextToSpeech tts;
-    public static byte questionNumber = 0;
+    public static byte questionIndex = 0;
     public static Intent[] questionIntent = new Intent[10];
 
     @Override
@@ -168,9 +168,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void nextQuestion(View view) {
-        questionIntent[questionNumber + 1] = new Intent(view.getContext(), MainActivity.class);
-        questionNumber += 1;
-        startActivityForResult(questionIntent[questionNumber], questionNumber);
+        if (questionIndex < 9) {
+            questionIntent[questionIndex + 1] = new Intent(view.getContext(), MainActivity.class);
+            questionIndex += 1;
+            startActivityForResult(questionIntent[questionIndex], questionIndex);
+        } else {
+            Intent mSummary = new Intent(view.getContext(), Summary.class);
+            startActivityForResult(mSummary, ++questionIndex);
+        }
     }
 
     // https://tomkuo139.blogspot.com/2016/03/android-tts-api-text-to-speech.html
