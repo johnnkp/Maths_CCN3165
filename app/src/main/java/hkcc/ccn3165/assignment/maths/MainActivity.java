@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button next = (Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 if (!isAnswered) {
                     AlertDialog.Builder skipQuestionBuilder = new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Try to answer")
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int i) {
+                                    nextQuestion(view);
                                 }
                             });
                     skip = skipQuestionBuilder.create();
