@@ -79,9 +79,15 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
+                String mCorrectness, mCorrectOutput = "Correct answer is " + correctAnswer, mCheer;
                 if (userAnswer == correctAnswer) {
+                    mCorrectness = "You are right!";
+                    mCheer = "Great job!";
                     answer.setTextColor(getResources().getColor(R.color.colorPrimary));
-
+                    answer.setText(mCorrectness + "\n" +
+                            mCorrectOutput + "\n" +
+                            mCheer);
+                    tts.speak(mCorrectness + mCorrectOutput + mCheer, TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         });
