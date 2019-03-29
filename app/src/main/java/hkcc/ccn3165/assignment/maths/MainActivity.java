@@ -31,7 +31,13 @@ public class MainActivity extends AppCompatActivity {
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 EditText input = findViewById(R.id.input);
-                int userAnswer = Integer.parseInt(input.getText().toString()), correctAnswer = 0;
+                long userAnswer;
+                int correctAnswer = 0;
+                if (input.getText().toString().equals("")) {
+                    userAnswer = -1;
+                } else {
+                    userAnswer = Long.parseLong(input.getText().toString());
+                }
                 switch (mOperator) {
                     case "+":
                         correctAnswer = firstNumber + secondNumber;
