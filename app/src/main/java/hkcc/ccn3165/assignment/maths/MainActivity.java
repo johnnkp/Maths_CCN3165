@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     userAnswer = -1;
                 } else {
                     userAnswer = Long.parseLong(input.getText().toString());
+                    input.setEnabled(false);
                     isAnswered = true;
                 }
                 switch (mOperator) {
@@ -85,9 +86,15 @@ public class MainActivity extends AppCompatActivity {
                     mCheer = "Great job!";
                     answer.setTextColor(getResources().getColor(R.color.colorPrimary));
                     answer.setText(mCorrectness + "\n" +
+                            mCheer);
+                    tts.speak(mCorrectness + mCheer, TextToSpeech.QUEUE_FLUSH, null);
+                } else {
+                    mCorrectness = "That’s not right.";
+                    mCheer = "You can do better next question!";
+                    answer.setTextColor(Color.RED);
+                    answer.setText(mCorrectness + "\n" +
                             mCorrectOutput + "\n" +
                             mCheer);
-                    tts.speak(mCorrectness + mCorrectOutput + mCheer, TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         });
@@ -96,10 +103,11 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View view) {
                 if (!isAnswered) {
+                    String mNotAnswered = "You haven't answered this question!", mSkipQuestion = "Do you want to skip?";
                     AlertDialog.Builder skipQuestionBuilder = new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Try to answer")
-                            .setMessage("You haven't answered this question!\n" +
-                                    "Do you want to skip?")
+                            .setMessage(mNotAnswered + "\n" +
+                                    mSkipQuestion)
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int i) {
                                 }
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     skip.show();
+                    // tts.speak(mNotAnswered + mSkipQuestion, TextToSpeech.QUEUE_FLUSH, null);
                 } else {
                     nextQuestion(view);
                 }
