@@ -13,7 +13,9 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
-    static TextView answer;
+    public static TextView answer;
+    public static byte questionNumber = 0;
+    public static Intent[] questionIntent = new Intent[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
         Button next = (Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                startActivityForResult(myIntent, 0);
+                questionIntent[questionNumber + 1] = new Intent(view.getContext(), MainActivity.class);
+                questionNumber += 1;
+                startActivityForResult(questionIntent[questionNumber], questionNumber);
             }
         });
     }
