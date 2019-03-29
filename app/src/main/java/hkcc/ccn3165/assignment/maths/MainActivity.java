@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
     public static TextView answer;
+    public static EditText input;
+    boolean isAnswered = false;
     public static byte questionNumber = 0;
     public static Intent[] questionIntent = new Intent[10];
 
@@ -29,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
         Button submit = findViewById(R.id.submit);
         answer = findViewById(R.id.answer);
+        input = findViewById(R.id.input);
 
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                EditText input = findViewById(R.id.input);
                 long userAnswer;
                 int correctAnswer = 0;
                 if (input.getText().toString().equals("")) {
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     userAnswer = -1;
                 } else {
                     userAnswer = Long.parseLong(input.getText().toString());
+                    isAnswered = true;
                 }
                 switch (mOperator) {
                     case "+":
@@ -77,9 +80,23 @@ public class MainActivity extends AppCompatActivity {
         Button next = (Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                questionIntent[questionNumber + 1] = new Intent(view.getContext(), MainActivity.class);
-                questionNumber += 1;
-                startActivityForResult(questionIntent[questionNumber], questionNumber);
+                if (!isAnswered) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Try to answer")
+                            .setMessage("You haven't answered this question!\n" +
+                                    "Do you want to skip?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int i) {
+                                }
+                            })
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int i) {
+                                }
+                            })
+                            .show();
+                } else {
+                    nextQuestion(view);
+                }
             }
         });
     }
@@ -116,5 +133,11 @@ public class MainActivity extends AppCompatActivity {
         }
         mQuestion = mQuestion + firstNumber + mOperator + secondNumber + " = ?";
         return mQuestion;
+    }
+
+    private void nextQuestion(View view) {
+        questionIntent[questionNumber + 1] = new Intent(view.getContext(), MainActivity.class);
+        questionNumber += 1;
+        startActivityForResult(questionIntent[questionNumber], questionNumber);
     }
 }
