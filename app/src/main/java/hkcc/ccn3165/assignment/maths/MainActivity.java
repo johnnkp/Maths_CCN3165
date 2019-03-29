@@ -1,5 +1,7 @@
 package hkcc.ccn3165.assignment.maths;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
                 long userAnswer;
                 int correctAnswer = 0;
                 if (input.getText().toString().equals("")) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Try to answer")
+                            .setMessage("You haven't entered anything!\n" +
+                                    "Try to answer this question!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int i) {
+                                }
+                            })
+                            .show();
                     userAnswer = -1;
                 } else {
                     userAnswer = Long.parseLong(input.getText().toString());
