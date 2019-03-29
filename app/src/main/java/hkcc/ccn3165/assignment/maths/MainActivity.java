@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 firstNumber = 1 + myRandom.nextInt(99);
                 do {
                     secondNumber = myRandom.nextInt(100);
-                } while (firstNumber % secondNumber != 0);
+                } while (secondNumber == 0 || firstNumber % secondNumber != 0);
                 break;
         }
         mQuestion = mQuestion + firstNumber + mOperator + secondNumber + " = ?";
