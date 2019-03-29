@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static EditText input;
     boolean isAnswered = false;
     public static AlertDialog skip;
+    TextToSpeech tts;
     public static byte questionNumber = 0;
     public static Intent[] questionIntent = new Intent[10];
 
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // 建立 TTS
+        createLanguageTTS();
 
         TextView question = findViewById(R.id.question);
         question.setText(question());
@@ -40,15 +45,17 @@ public class MainActivity extends AppCompatActivity {
                 long userAnswer;
                 int correctAnswer = 0;
                 if (input.getText().toString().equals("")) {
+                    String mNotEntered = "You haven't entered anything!", mTry = "Try to answer this question!";
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Try to answer")
-                            .setMessage("You haven't entered anything!\n" +
-                                    "Try to answer this question!")
+                            .setMessage(mNotEntered + "\n" + mTry)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int i) {
                                 }
                             })
                             .show();
+                    //【英文】發音
+                    // tts.speak(mNotEntered + mTry, TextToSpeech.QUEUE_FLUSH, null);
                     userAnswer = -1;
                 } else {
                     userAnswer = Long.parseLong(input.getText().toString());
@@ -149,5 +156,33 @@ public class MainActivity extends AppCompatActivity {
         questionIntent[questionNumber + 1] = new Intent(view.getContext(), MainActivity.class);
         questionNumber += 1;
         startActivityForResult(questionIntent[questionNumber], questionNumber);
+    }
+
+    // https://tomkuo139.blogspot.com/2016/03/android-tts-api-text-to-speech.html
+    protected void onDestroy() {
+        // 釋放 TTS
+        if (tts != null) tts.shutdown();
+        super.onDestroy();
+    }
+
+    // https://tomkuo139.blogspot.com/2016/03/android-tts-api-text-to-speech.html
+    private void createLanguageTTS() {
+        if (tts == null) {
+            tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int arg0) {
+                    // TTS 初始化成功
+                    if (arg0 == TextToSpeech.SUCCESS) {
+                        // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
+                        if (tts.isLanguageAvailable(Locale.UK) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                            tts.setLanguage(Locale.UK); // 不要用 Locale.ENGLISH, 會預設用英文(印度)
+                        } else if (tts.isLanguageAvailable(Locale.US) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                            tts.setLanguage(Locale.US);
+                        }
+                    }
+                }
+            }
+            );
+        }
     }
 }
