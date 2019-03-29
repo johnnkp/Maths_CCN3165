@@ -3,6 +3,7 @@ package hkcc.ccn3165.assignment.maths;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public static TextView answer;
     public static EditText input;
     boolean isAnswered = false;
+    public static AlertDialog skip;
     public static byte questionNumber = 0;
     public static Intent[] questionIntent = new Intent[10];
 
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (!isAnswered) {
-                    new AlertDialog.Builder(MainActivity.this)
+                    AlertDialog.Builder skipQuestionBuilder = new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Try to answer")
                             .setMessage("You haven't answered this question!\n" +
                                     "Do you want to skip?")
@@ -89,11 +91,18 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialoginterface, int i) {
                                 }
                             })
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int i) {
                                 }
-                            })
-                            .show();
+                            });
+                    skip = skipQuestionBuilder.create();
+                    skip.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface arg0) {
+                            skip.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                        }
+                    });
+                    skip.show();
                 } else {
                     nextQuestion(view);
                 }
