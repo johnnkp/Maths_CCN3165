@@ -5,4 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Summary">
 
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Summary"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
+
 </RelativeLayout>

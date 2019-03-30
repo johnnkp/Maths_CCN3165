@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialoginterface, int i) {
+                                    // input.setEnabled(false);
                                     nextQuestion(view);
                                 }
                             });
