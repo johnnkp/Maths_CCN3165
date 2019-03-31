@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isAnswered = false;
     public static AlertDialog skip;
     TextToSpeech tts;
-    public static byte questionIndex = 0;
+    public static byte questionIndex = 0, score = 0;
     public static Intent[] questionIntent = new Intent[10];
 
     @Override
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String mCorrectness, mCorrectOutput = "Correct answer is " + correctAnswer, mCheer;
                 if (userAnswer == correctAnswer) {
+                    score++;
                     mCorrectness = "You are right!";
                     mCheer = "Great job!";
                     answer.setTextColor(getResources().getColor(R.color.colorPrimary));
