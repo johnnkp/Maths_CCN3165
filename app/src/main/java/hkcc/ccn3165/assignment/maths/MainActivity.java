@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,12 +19,13 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
-    public static TextView answer;
+    public static TextView answer, countdown;
     public static EditText input;
     boolean isAnswered = false;
     public static AlertDialog skip;
     public static TextToSpeech tts;
     public static byte questionIndex = 0, score = 0;
+    public static CountDownTimer timer;
     public static Intent[] questionIntent = new Intent[10];
 
     @Override
@@ -133,6 +135,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        countdown = findViewById(R.id.timer);
+        if (timer == null) {
+            timer = new CountDownTimer(300000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    countdown.setText(millisUntilFinished / 60000 + " : " + millisUntilFinished / 1000 % 60);
+                }
+
+                public void onFinish() {
+                    countdown.setText("Time's up!");
+                }
+            }.start();
+        }
     }
 
     private String question() {
