@@ -13,4 +13,23 @@
         android:textColor="@android:color/black"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/summary"
+        android:layout_marginTop="20dp"
+        android:text="You have answered ? questions correctly."
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/wrong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/score"
+        android:layout_marginTop="20dp"
+        android:text="You have answered ? questions wrongly."
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="30sp" />
 </RelativeLayout>
