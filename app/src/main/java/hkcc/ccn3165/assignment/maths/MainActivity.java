@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static EditText input;
     boolean isAnswered = false;
     public static AlertDialog skip;
-    TextToSpeech tts;
+    public static TextToSpeech tts;
     public static byte questionIndex = 0, score = 0;
     public static Intent[] questionIntent = new Intent[10];
 
