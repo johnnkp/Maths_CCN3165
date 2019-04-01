@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         // 建立 TTS
         createLanguageTTS();
 
+        if (countdown == null) {
+            countdown = findViewById(R.id.timer);
+        }
+        if (countdown.getText().toString().equals("Time's up!")) {
+            input.setEnabled(false);
+        }
+
         TextView question = findViewById(R.id.question);
         question.setText(question());
 
@@ -136,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        countdown = findViewById(R.id.timer);
         if (timer == null) {
             timer = new CountDownTimer(300000, 1000) {
                 public void onTick(long millisUntilFinished) {
@@ -145,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
                 public void onFinish() {
                     countdown.setText("Time's up!");
+                    input.setEnabled(false);
+                    Intent mSummary = new Intent(MainActivity.this, Summary.class);
+                    startActivityForResult(mSummary, ++questionIndex);
                 }
             }.start();
         }
