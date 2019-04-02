@@ -19,7 +19,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
-    public static TextView answer, countdown;
+    TextView answer, countdown, question;
     public static EditText input;
     boolean isAnswered = false;
     public static AlertDialog skip;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             input.setEnabled(false);
         }
 
-        TextView question = findViewById(R.id.question);
+        question = findViewById(R.id.question);
         question.setText(question());
 
         Button submit = findViewById(R.id.submit);
@@ -195,9 +195,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void nextQuestion(View view) {
         if (questionIndex < 9) {
-            questionIntent[questionIndex + 1] = new Intent(view.getContext(), MainActivity.class);
             questionIndex += 1;
-            startActivityForResult(questionIntent[questionIndex], questionIndex);
+            question.setText(question());
+            input.setEnabled(true);
         } else {
             Intent mSummary = new Intent(view.getContext(), Summary.class);
             startActivityForResult(mSummary, ++questionIndex);
