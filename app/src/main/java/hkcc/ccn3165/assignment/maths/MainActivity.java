@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -35,14 +36,8 @@ public class MainActivity extends AppCompatActivity {
         // 建立 TTS
         createLanguageTTS();
 
+        countdown = findViewById(R.id.timer);
         submit = findViewById(R.id.submit);
-        if (countdown == null) {
-            countdown = findViewById(R.id.timer);
-        }
-        if (countdown.getText().toString().equals("Time's up!") || questionIndex == 9 || isAnswered) {
-            input.setEnabled(false);
-            submit.setEnabled(false);
-        }
 
         question = findViewById(R.id.question);
         question.setText(question());
@@ -116,27 +111,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(final View view) {
                 if (!isAnswered) {
                     String mNotAnswered = "You haven't answered this question!", mSkipQuestion = "Do you want to skip?";
-                    AlertDialog.Builder skipQuestionBuilder = new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Try to answer")
-                            .setMessage(mNotAnswered + "\n" +
-                                    mSkipQuestion)
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialoginterface, int i) {
+                    if (skip == null) {
+                        AlertDialog.Builder skipQuestionBuilder = new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Try to answer")
+                                .setMessage(mNotAnswered + "\n" +
+                                        mSkipQuestion)
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialoginterface, int i) {
+                                    }
+                                })
+                                .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialoginterface, int i) {
+                                        // input.setEnabled(false);
+                                        nextQuestion(view);
+                                    }
+                                });
+                        skip = skipQuestionBuilder.create();
+                        skip.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface arg0) {
+                                skip.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+                                    skip.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                                 }
-                            })
-                            .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialoginterface, int i) {
-                                    // input.setEnabled(false);
-                                    nextQuestion(view);
-                                }
-                            });
-                    skip = skipQuestionBuilder.create();
-                    skip.setOnShowListener(new DialogInterface.OnShowListener() {
-                        @Override
-                        public void onShow(DialogInterface arg0) {
-                            skip.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
-                        }
-                    });
+                            }
+                        });
+                    }
                     skip.show();
                     // tts.speak(mNotAnswered + mSkipQuestion, TextToSpeech.QUEUE_FLUSH, null);
                 } else {
@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFinish() {
                     countdown.setText("Time's up!");
                     input.setEnabled(false);
+                    submit.setEnabled(false);
                     Intent mSummary = new Intent(MainActivity.this, Summary.class);
                     startActivityForResult(mSummary, ++questionIndex);
                 }
@@ -196,14 +197,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void nextQuestion(View view) {
-        if (questionIndex < 9) {
-            questionIndex ++;
-            question.setText(question());
-            isAnswered = false;
-            answer.setTextColor(Color.BLACK);
-            answer.setText("Answer:");
-            input.setEnabled(true);
-            submit.setEnabled(true);
+        if (!countdown.getText().toString().equals("Time's up!")) {
+            if (questionIndex < 9) {
+                questionIndex++;
+                question.setText(question());
+                isAnswered = false;
+                answer.setTextColor(Color.BLACK);
+                answer.setText("Answer:");
+                input.setEnabled(true);
+                submit.setEnabled(true);
+            }
         } else {
             input.setEnabled(false);
             submit.setEnabled(false);
