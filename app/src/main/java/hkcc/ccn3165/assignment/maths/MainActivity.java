@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static AlertDialog skip;
     public static TextToSpeech tts;
     public static byte questionIndex = 0, score = 0;
-    public static CountDownTimer timer;
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +36,12 @@ public class MainActivity extends AppCompatActivity {
         // 建立 TTS
         createLanguageTTS();
 
-        countdown = findViewById(R.id.timer);
-        submit = findViewById(R.id.submit);
-
         question = findViewById(R.id.question);
         question.setText(question());
 
         answer = findViewById(R.id.answer);
         input = findViewById(R.id.input);
-
+        submit = findViewById(R.id.submit);
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 long userAnswer;
@@ -145,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        countdown = findViewById(R.id.timer);
         if (timer == null) {
             timer = new CountDownTimer(300000 + 500, 1000) { // https://yifeng.studio/2017/09/26/android-countdowntimer-using-attentions/
                 public void onTick(long millisUntilFinished) {
@@ -197,16 +195,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void nextQuestion(View view) {
-        if (!countdown.getText().toString().equals("Time's up!")) {
-            if (questionIndex < 9) {
-                questionIndex++;
-                question.setText(question());
-                isAnswered = false;
-                answer.setTextColor(Color.BLACK);
-                answer.setText("Answer:");
-                input.setEnabled(true);
-                submit.setEnabled(true);
-            }
+        if (countdown.getText().toString().equals("Time's up!")) {
+            input.setEnabled(false);
+            submit.setEnabled(false);
+            Intent mSummary = new Intent(view.getContext(), Summary.class);
+            startActivityForResult(mSummary, ++questionIndex);
+        } else if (questionIndex < 9) {
+            questionIndex++;
+            question.setText(question());
+            isAnswered = false;
+            answer.setTextColor(Color.BLACK);
+            answer.setText("Answer:");
+            input.setEnabled(true);
+            submit.setEnabled(true);
         } else {
             input.setEnabled(false);
             submit.setEnabled(false);
