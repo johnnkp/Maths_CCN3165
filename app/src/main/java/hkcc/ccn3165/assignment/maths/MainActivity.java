@@ -20,13 +20,13 @@ public class MainActivity extends AppCompatActivity {
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
     TextView answer, countdown, question;
-    public static EditText input;
+    Button submit;
+    EditText input;
     boolean isAnswered = false;
     public static AlertDialog skip;
     public static TextToSpeech tts;
     public static byte questionIndex = 0, score = 0;
     public static CountDownTimer timer;
-    public static Intent[] questionIntent = new Intent[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +35,18 @@ public class MainActivity extends AppCompatActivity {
         // 建立 TTS
         createLanguageTTS();
 
+        submit = findViewById(R.id.submit);
         if (countdown == null) {
             countdown = findViewById(R.id.timer);
         }
-        if (countdown.getText().toString().equals("Time's up!")) {
+        if (countdown.getText().toString().equals("Time's up!") || questionIndex == 9) {
             input.setEnabled(false);
+            submit.setEnabled(false);
         }
 
         question = findViewById(R.id.question);
         question.setText(question());
 
-        Button submit = findViewById(R.id.submit);
         answer = findViewById(R.id.answer);
         input = findViewById(R.id.input);
 
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
+                submit.setEnabled(false);
                 String mCorrectness, mCorrectOutput = "Correct answer is " + correctAnswer, mCheer;
                 if (userAnswer == correctAnswer) {
                     score++;
@@ -198,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
             questionIndex += 1;
             question.setText(question());
             input.setEnabled(true);
+            submit.setEnabled(true);
         } else {
             Intent mSummary = new Intent(view.getContext(), Summary.class);
             startActivityForResult(mSummary, ++questionIndex);
