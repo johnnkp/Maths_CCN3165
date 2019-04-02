@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         if (countdown == null) {
             countdown = findViewById(R.id.timer);
         }
-        if (countdown.getText().toString().equals("Time's up!") || questionIndex == 9) {
+        if (countdown.getText().toString().equals("Time's up!") || questionIndex == 9 || isAnswered) {
             input.setEnabled(false);
             submit.setEnabled(false);
         }
@@ -197,11 +197,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void nextQuestion(View view) {
         if (questionIndex < 9) {
-            questionIndex += 1;
+            questionIndex ++;
             question.setText(question());
+            isAnswered = false;
+            answer.setTextColor(Color.BLACK);
+            answer.setText("Answer:");
             input.setEnabled(true);
             submit.setEnabled(true);
         } else {
+            input.setEnabled(false);
+            submit.setEnabled(false);
             Intent mSummary = new Intent(view.getContext(), Summary.class);
             startActivityForResult(mSummary, ++questionIndex);
         }
