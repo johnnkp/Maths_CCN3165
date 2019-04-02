@@ -18,14 +18,14 @@ import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    public static TextToSpeech tts;
     int firstNumber = 0, secondNumber = 0;
     String mOperator;
     TextView answer, countdown, question;
     Button submit;
     EditText input;
     boolean isAnswered = false;
-    public static AlertDialog skip;
-    public static TextToSpeech tts;
+    AlertDialog skip;
     public static byte questionIndex = 0, score = 0;
     CountDownTimer timer;
 
@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
         submit = findViewById(R.id.submit);
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                long userAnswer;
-                int correctAnswer = 0;
+                int userAnswer, correctAnswer = 0;
                 if (input.getText().toString().equals("")) {
                     String mNotEntered = "You haven't entered anything!", mTry = "Try to answer this question!";
                     new AlertDialog.Builder(MainActivity.this)
@@ -60,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
                     // tts.speak(mNotEntered + mTry, TextToSpeech.QUEUE_FLUSH, null);
                     userAnswer = -1;
                 } else {
-                    userAnswer = Long.parseLong(input.getText().toString());
+                    userAnswer = Integer.parseInt(input.getText().toString());
                     input.setEnabled(false);
                     isAnswered = true;
                 }
+
                 switch (mOperator) {
                     case "+":
                         correctAnswer = firstNumber + secondNumber;
@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialoginterface, int i) {
-                                        // input.setEnabled(false);
                                         nextQuestion(view);
                                     }
                                 });
@@ -148,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onTick(long millisUntilFinished) {
                     countdown.setText(millisUntilFinished / 60000 + " : " + millisUntilFinished / 1000 % 60);
                 }
-
                 public void onFinish() {
                     countdown.setText("Time's up!");
                     input.setEnabled(false);

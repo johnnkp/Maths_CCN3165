@@ -32,6 +32,7 @@
         android:layout_marginTop="20dp"
         android:hint="Type your answer here"
         android:inputType="number"
+        android:maxLength="4"
         android:textSize="20sp" />
 
     <Button
