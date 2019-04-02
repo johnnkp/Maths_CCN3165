@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (timer == null) {
-            timer = new CountDownTimer(300000, 1000) {
+            timer = new CountDownTimer(300000 + 500, 1000) { // https://yifeng.studio/2017/09/26/android-countdowntimer-using-attentions/
                 public void onTick(long millisUntilFinished) {
                     countdown.setText(millisUntilFinished / 60000 + " : " + millisUntilFinished / 1000 % 60);
                 }
@@ -215,10 +215,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // https://tomkuo139.blogspot.com/2016/03/android-tts-api-text-to-speech.html
     protected void onDestroy() {
-        // 釋放 TTS
-        if (tts != null) tts.shutdown();
+        if (tts != null) tts.shutdown(); // 釋放 TTS
+        if (timer != null) timer.cancel(); // http://yifeng.studio/2017/09/26/android-countdowntimer-using-attentions/
         super.onDestroy();
     }
 
