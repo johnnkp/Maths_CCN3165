@@ -5,10 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,25 +45,6 @@ public class MainActivity extends AppCompatActivity {
         submit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 int userAnswer, correctAnswer = 0;
-                if (input.getText().toString().equals("")) {
-                    String mNotEntered = "You haven't entered anything!", mTry = "Try to answer this question!";
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Try to answer")
-                            .setMessage(mNotEntered + "\n" + mTry)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialoginterface, int i) {
-                                }
-                            })
-                            .show();
-                    //【英文】發音
-                    // tts.speak(mNotEntered + mTry, TextToSpeech.QUEUE_FLUSH, null);
-                    userAnswer = -1;
-                } else {
-                    userAnswer = Integer.parseInt(input.getText().toString());
-                    input.setEnabled(false);
-                    isAnswered = true;
-                }
-
                 switch (mOperator) {
                     case "+":
                         correctAnswer = firstNumber + secondNumber;
@@ -82,24 +63,44 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                submit.setEnabled(false);
-                String mCorrectness, mCorrectOutput = "Correct answer is " + correctAnswer, mCheer;
-                if (userAnswer == correctAnswer) {
-                    score++;
-                    mCorrectness = "You are right!";
-                    mCheer = "Great job!";
-                    answer.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    answer.setText(mCorrectness + "\n" +
-                            mCheer);
-                    tts.speak(mCorrectness + mCheer, TextToSpeech.QUEUE_FLUSH, null);
+                if (input.getText().toString().equals("")) {
+                    String mNotEntered = "You haven't entered anything!", mTry = "Try to answer this question!";
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Try to answer")
+                            .setMessage(mNotEntered + "\n" + mTry)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int i) {
+                                }
+                            })
+                            .show();
+                    //【英文】發音
+                    // tts.speak(mNotEntered + mTry, TextToSpeech.QUEUE_FLUSH, null);
+                    // userAnswer = -1;
                 } else {
-                    mCorrectness = "That’s not right.";
-                    mCheer = "You can do better next question!";
-                    answer.setTextColor(Color.RED);
-                    answer.setText(mCorrectness + "\n" +
-                            mCorrectOutput + "\n" +
-                            mCheer);
+                    userAnswer = Integer.parseInt(input.getText().toString());
+                    input.setEnabled(false);
+                    isAnswered = true;
+
+                    submit.setEnabled(false);
+                    String mCorrectness, mCorrectOutput = "Correct answer is " + correctAnswer, mCheer;
+                    if (userAnswer == correctAnswer) {
+                        score++;
+                        mCorrectness = "You are right!";
+                        mCheer = "Great job!";
+                        answer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        answer.setText(mCorrectness + "\n" +
+                                mCheer);
+                        tts.speak(mCorrectness + mCheer, TextToSpeech.QUEUE_FLUSH, null);
+                    } else {
+                        mCorrectness = "That’s not right.";
+                        mCheer = "You can do better next question!";
+                        answer.setTextColor(Color.RED);
+                        answer.setText(mCorrectness + "\n" +
+                                mCorrectOutput + "\n" +
+                                mCheer);
+                    }
                 }
+
             }
         });
 
